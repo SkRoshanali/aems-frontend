@@ -109,6 +109,133 @@ function Landing() {
         </div>
       </div>
 
+      {/* How to Register Section */}
+      <div className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-display font-bold text-gray-900 mb-3">How to Get Started</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">Joining AEMS as a buyer is simple. Follow these steps and start ordering premium agricultural goods in minutes.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              { step: '01', icon: '📝', title: 'Register', desc: 'Click "Register as Buyer", fill in your details — name, email, company, and contact info.' },
+              { step: '02', icon: '✅', title: 'Get Approved', desc: 'Our admin team reviews your profile and approves your account within 24 hours.' },
+              { step: '03', icon: '🔍', title: 'Browse Crops', desc: 'Explore our storefront — filter by crop type, origin, price, and available stock.' },
+              { step: '04', icon: '🛒', title: 'Place Order', desc: 'Select quantity, confirm your order, and receive an invoice instantly via email.' },
+            ].map(({ step, icon, title, desc }) => (
+              <div key={step} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center relative">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">{step}</div>
+                <div className="text-4xl mt-4 mb-3">{icon}</div>
+                <h3 className="text-lg font-semibold mb-2">{title}</h3>
+                <p className="text-gray-500 text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Quality Assurance Section */}
+      <div className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-display font-bold text-gray-900 mb-3">How We Ensure Quality</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">Every crop that reaches you goes through a rigorous multi-stage quality pipeline before it's listed on our platform.</p>
+          </div>
+          <div className="relative">
+            <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-primary/20 z-0" />
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10">
+              {[
+                { icon: '🌱', title: 'Farm Sourcing', desc: 'Crops sourced directly from verified, registered farmers with documented growing practices.' },
+                { icon: '🔬', title: 'Lab Testing', desc: 'Each batch undergoes pesticide residue, moisture, and contamination testing.' },
+                { icon: '⚖️', title: 'Grading', desc: 'Produce is graded by size, weight, and quality — only Grade A & B pass to listing.' },
+                { icon: '📦', title: 'Packaging', desc: 'Packed in food-safe, export-compliant packaging with batch codes and expiry labels.' },
+                { icon: '🏷️', title: 'Listed & Ready', desc: 'Approved stock is listed on the platform with full traceability details for buyers.' },
+              ].map(({ icon, title, desc }) => (
+                <div key={title} className="bg-gray-50 rounded-2xl p-5 text-center border border-gray-100">
+                  <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-2xl mx-auto mb-3">{icon}</div>
+                  <h3 className="font-semibold text-gray-800 mb-1">{title}</h3>
+                  <p className="text-gray-500 text-sm">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Delivery Types Section */}
+      <div className="bg-gradient-to-br from-primary/5 to-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-display font-bold text-gray-900 mb-3">Flexible Delivery Options</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">Whether you're a small retailer or a large-scale importer, we have a delivery plan that fits your volume and timeline.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <div className="text-4xl mb-4">📦</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">Small Parcel</h3>
+              <p className="text-primary font-semibold text-sm mb-3">1 kg – 50 kg</p>
+              <ul className="text-gray-500 text-sm space-y-2">
+                <li>✔ Ideal for individual buyers & retailers</li>
+                <li>✔ Standard courier delivery</li>
+                <li>✔ Delivered within 3–5 business days</li>
+                <li>✔ Real-time tracking included</li>
+              </ul>
+            </div>
+            <div className="bg-primary text-white rounded-2xl p-8 shadow-lg relative overflow-hidden">
+              <div className="absolute top-4 right-4 bg-white text-primary text-xs font-bold px-2 py-1 rounded-full">Most Popular</div>
+              <div className="text-4xl mb-4">🚛</div>
+              <h3 className="text-xl font-bold mb-1">Medium Freight</h3>
+              <p className="text-primary-100 font-semibold text-sm mb-3 opacity-80">50 kg – 1,000 kg</p>
+              <ul className="text-sm space-y-2 opacity-90">
+                <li>✔ For wholesalers & small businesses</li>
+                <li>✔ Refrigerated transport available</li>
+                <li>✔ Delivered within 5–7 business days</li>
+                <li>✔ Dedicated shipment manager</li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <div className="text-4xl mb-4">🚢</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">Bulk Export</h3>
+              <p className="text-primary font-semibold text-sm mb-3">1,000 kg+</p>
+              <ul className="text-gray-500 text-sm space-y-2">
+                <li>✔ For large importers & distributors</li>
+                <li>✔ Container & sea freight options</li>
+                <li>✔ Custom delivery timelines</li>
+                <li>✔ Full export documentation support</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Why AEMS Section */}
+      <div className="bg-gray-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-display font-bold mb-3">Why AEMS is the Best Choice</h2>
+            <p className="text-gray-400 max-w-xl mx-auto">We're not just a marketplace — we're a complete agri-export ecosystem built for trust, speed, and scale.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: '🔒', title: 'End-to-End Traceability', desc: 'Every product is traceable from the farm to your doorstep. Know exactly where your food comes from.' },
+              { icon: '⚡', title: 'Instant Order Processing', desc: 'Orders are processed in real-time. Invoices generated automatically and sent to your email.' },
+              { icon: '🌍', title: 'Global Export Ready', desc: 'All goods are packed and documented to meet international export standards and customs requirements.' },
+              { icon: '🤝', title: 'Verified Farmer Network', desc: 'We work only with registered, background-verified farmers ensuring ethical and sustainable sourcing.' },
+              { icon: '📊', title: 'Live Stock Updates', desc: 'Stock levels update in real-time so you always know what\'s available before placing an order.' },
+              { icon: '💬', title: 'Dedicated Support', desc: 'Our team is available to assist with orders, shipments, and any queries throughout the process.' },
+            ].map(({ icon, title, desc }) => (
+              <div key={title} className="flex gap-4">
+                <div className="text-3xl mt-1">{icon}</div>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">{title}</h3>
+                  <p className="text-gray-400 text-sm">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
