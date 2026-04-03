@@ -43,6 +43,17 @@ function Landing() {
           </div>
         </div>
 
+        <div className="mt-12 rounded-2xl overflow-hidden shadow-2xl max-w-4xl mx-auto">
+          <video
+            src="/aemsvideo.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-auto"
+          />
+        </div>
+
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="card text-center">
             <div className="text-4xl mb-4">🌾</div>
