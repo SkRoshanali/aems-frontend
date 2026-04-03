@@ -3,8 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const TOKEN_EXPIRY_MS = 30 * 60 * 1000; // 30 minutes
 const REFRESH_BEFORE_MS = 5 * 60 * 1000; // Refresh 5 minutes before expiry
 
+const storedUser = localStorage.getItem('user');
+
 const initialState = {
-  user: null,
+  user: storedUser ? JSON.parse(storedUser) : null,
   token: localStorage.getItem('token'),
   refreshToken: localStorage.getItem('refreshToken'),
   tokenExpiry: localStorage.getItem('tokenExpiry') ? parseInt(localStorage.getItem('tokenExpiry')) : null,
