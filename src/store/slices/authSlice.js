@@ -57,8 +57,26 @@ const authSlice = createSlice({
     },
     loadUserFromStorage: (state) => {
       const storedUser = localStorage.getItem('user');
-      if (storedUser) {
+      const storedToken = localStorage.getItem('token');
+      const storedRefreshToken = localStorage.getItem('refreshToken');
+      const storedTokenExpiry = localStorage.getItem('tokenExpiry');
+      
+      console.log('Loading from storage:', { 
+        hasUser: !!storedUser, 
+        hasToken: !!storedToken,
+        hasRefreshToken: !!storedRefreshToken,
+        tokenExpiry: storedTokenExpiry
+      });
+      
+      if (storedUser && storedToken) {
         state.user = JSON.parse(storedUser);
+        state.token = storedToken;
+        state.refreshToken = storedRefreshToken;
+        state.tokenExpiry = storedTokenExpiry ? parseInt(storedTokenExpiry) : null;
+        state.isAuthenticated = true;
+        console.log('Auth state loaded from storage:', state.user);
+      } else {
+        console.log('No valid auth data in storage');
       }
     },
   },

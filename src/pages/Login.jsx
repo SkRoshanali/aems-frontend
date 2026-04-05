@@ -21,6 +21,7 @@ function Login() {
       const result = await login({ email, password }).unwrap();
       
       console.log('Login successful, result:', result);
+      console.log('Session expires at:', result.sessionExpires, 'Current time:', Date.now());
       
       dispatch(setCredentials({
         accessToken: result.accessToken,
