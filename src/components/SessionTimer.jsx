@@ -19,12 +19,37 @@ function SessionTimer() {
 
     // Parse session expiry once at the start
     let expiresAt;
-    if (typeof user.sessionExpires === 'string' && user.sessionExpires.match(/^\d+$/)) {
+    const sessionExpiresValue = user.sessionExpires;
+    
+    if (typeof sessionExpiresValue === 'string' && sessionExpiresValue.match(/^\d+$/)) {
       // It's a milliseconds timestamp string
-      expiresAt = parseInt(user.sessionExpires, 10);
+      expiresAt = parseInt(sessionExpiresValue, 10);
+    } else if (typeof sessionExpiresValue === 'number') {
+      // It's already a number
+      expiresAt = sessionExpiresValue;
     } else {
-      // It's an ISO date string
-      expiresAt = new Date(user.sessionExpires).getTime();
+      // It's an ISO date string - need to handle timezone correctly
+      // Backend sends LocalDateTime which doesn't have timezone info
+      // We need to treat it as local time, not UTC
+      const isoString = sessionExpiresValue.toString();
+      
+      // If the string doesn't have timezone info (no Z or +/-), treat as local time
+      if (!isoString.includes('Z') && !isoString.match(/[+-]\d{2}:\d{2}$/)) {
+        // Parse as local time by removing the 'T' and using Date constructor
+        // This is a LocalDateTime from Java, so we parse it as local time
+        const parts = isoString.split('T');
+        const datePart = parts[0];
+        const timePart = parts[1] ? parts[1].split('.')[0] : '00:00:00';
+        
+        const [year, month, day] = datePart.split('-').map(Number);
+        const [hour, minute, second] = timePart.split(':').map(Number);
+        
+        // Create date in local timezone
+        expiresAt = new Date(year, month - 1, day, hour, minute, second).getTime();
+      } else {
+        // Has timezone info, parse normally
+        expiresAt = new Date(isoString).getTime();
+      }
     }
     
     // Check if date parsing was successful
@@ -39,7 +64,9 @@ function SessionTimer() {
     console.log('SessionTimer: Initialized', {
       sessionExpires: user.sessionExpires,
       expiresAt: new Date(expiresAt).toISOString(),
+      expiresAtLocal: new Date(expiresAt).toString(),
       now: new Date(now).toISOString(),
+      nowLocal: new Date(now).toString(),
       initialDiffMinutes: Math.floor(initialDiff / 60000),
       initialDiffSeconds: Math.floor(initialDiff / 1000)
     });
