@@ -58,14 +58,30 @@ function InternalStockAdd() {
     }
 
     try {
-      await createStock({
-        ...formData,
+      // Only send fields that match the backend StockRequest DTO
+      const stockData = {
+        cropId: parseInt(formData.cropId),
+        farmerId: formData.farmerId ? parseInt(formData.farmerId) : null,
+        importSourceId: formData.importSourceId ? parseInt(formData.importSourceId) : null,
         quantity: parseFloat(formData.quantity),
+        unit: formData.unit,
         pricePerUnit: parseFloat(formData.pricePerUnit),
-      }).unwrap();
+        quality: formData.quality,
+        batchNumber: formData.harvestDate ? `BATCH-${new Date(formData.harvestDate).getTime()}` : null,
+        remarks: [
+          formData.storageLocation ? `Storage: ${formData.storageLocation}` : '',
+          formData.certifications ? `Certifications: ${formData.certifications}` : '',
+          formData.harvestDate ? `Harvest Date: ${formData.harvestDate}` : '',
+          formData.expiryDate ? `Expiry Date: ${formData.expiryDate}` : ''
+        ].filter(Boolean).join('; ')
+      };
+      
+      console.log('Sending stock data:', stockData);
+      await createStock(stockData).unwrap();
       navigate('/internal/stock');
     } catch (error) {
       console.error('Failed to create stock:', error);
+      alert(error?.data?.message || 'Failed to create stock. Please try again.');
     }
   };
 
