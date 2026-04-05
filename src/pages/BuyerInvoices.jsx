@@ -13,7 +13,8 @@ function BuyerInvoices() {
   );
 
   const handleDownloadInvoice = (orderId) => {
-    const url = `http://localhost:8080/api/invoices/${orderId}/download`;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+    const url = `${apiBaseUrl}/invoices/${orderId}/download`;
     const token = localStorage.getItem('token');
     
     fetch(url, {

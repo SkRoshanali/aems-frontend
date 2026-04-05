@@ -25,7 +25,8 @@ function InternalReports() {
   );
 
   const handleExportStock = () => {
-    const url = `http://localhost:8080/api/reports/stocks/excel?activeOnly=${activeOnly}`;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+    const url = `${apiBaseUrl}/reports/stocks/excel?activeOnly=${activeOnly}`;
     const token = localStorage.getItem('token');
     
     fetch(url, {
@@ -42,7 +43,8 @@ function InternalReports() {
   };
 
   const handleExportSales = () => {
-    const url = `http://localhost:8080/api/reports/sales/excel`;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+    const url = `${apiBaseUrl}/reports/sales/excel`;
     const token = localStorage.getItem('token');
     
     fetch(url, {
