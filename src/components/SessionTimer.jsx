@@ -21,35 +21,27 @@ function SessionTimer() {
     let expiresAt;
     const sessionExpiresValue = user.sessionExpires;
     
+    console.log('SessionTimer: Raw sessionExpires value:', sessionExpiresValue, 'Type:', typeof sessionExpiresValue);
+    
     if (typeof sessionExpiresValue === 'string' && sessionExpiresValue.match(/^\d+$/)) {
       // It's a milliseconds timestamp string
       expiresAt = parseInt(sessionExpiresValue, 10);
+      console.log('SessionTimer: Parsed as milliseconds timestamp');
     } else if (typeof sessionExpiresValue === 'number') {
       // It's already a number
       expiresAt = sessionExpiresValue;
+      console.log('SessionTimer: Already a number');
     } else {
-      // It's an ISO date string - need to handle timezone correctly
-      // Backend sends LocalDateTime which doesn't have timezone info
-      // We need to treat it as local time, not UTC
+      // It's an ISO date string from backend LocalDateTime
+      // The backend is likely running in UTC timezone on Render
+      // So we need to parse this as UTC time, not local time
       const isoString = sessionExpiresValue.toString();
       
-      // If the string doesn't have timezone info (no Z or +/-), treat as local time
-      if (!isoString.includes('Z') && !isoString.match(/[+-]\d{2}:\d{2}$/)) {
-        // Parse as local time by removing the 'T' and using Date constructor
-        // This is a LocalDateTime from Java, so we parse it as local time
-        const parts = isoString.split('T');
-        const datePart = parts[0];
-        const timePart = parts[1] ? parts[1].split('.')[0] : '00:00:00';
-        
-        const [year, month, day] = datePart.split('-').map(Number);
-        const [hour, minute, second] = timePart.split(':').map(Number);
-        
-        // Create date in local timezone
-        expiresAt = new Date(year, month - 1, day, hour, minute, second).getTime();
-      } else {
-        // Has timezone info, parse normally
-        expiresAt = new Date(isoString).getTime();
-      }
+      // Parse the ISO string and assume it's in UTC (backend server time)
+      // Then we'll use it directly
+      expiresAt = new Date(isoString + 'Z').getTime(); // Add 'Z' to force UTC parsing
+      
+      console.log('SessionTimer: Parsed ISO string as UTC by adding Z');
     }
     
     // Check if date parsing was successful
@@ -87,6 +79,7 @@ function SessionTimer() {
     }
 
     hasLoggedOut.current = false;
+    setTimeLeft(initialDiff);
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
