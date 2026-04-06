@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterBuyerMutation } from '../api/userApi';
 import { useDispatch } from 'react-redux';
 import { showToast } from '../store/slices/uiSlice';
+import { INDIAN_STATES, COUNTRY } from '../constants/india';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -14,8 +15,8 @@ function Register() {
     address: '',
     city: '',
     state: '',
-    zipCode: '',
-    country: '',
+    pinCode: '',
+    country: COUNTRY,
   });
   const [errors, setErrors] = useState({});
   const [registerBuyer, { isLoading }] = useRegisterBuyerMutation();
@@ -47,6 +48,22 @@ function Register() {
     
     if (!formData.phoneNumber.trim()) {
       newErrors.phoneNumber = 'Phone number is required';
+    } else if (!/^[6-9]\d{9}$/.test(formData.phoneNumber.replace(/\D/g, ''))) {
+      newErrors.phoneNumber = 'Invalid Indian phone number (10 digits starting with 6-9)';
+    }
+    
+    if (!formData.state) {
+      newErrors.state = 'State is required';
+    }
+    
+    if (!formData.city.trim()) {
+      newErrors.city = 'City is required';
+    }
+    
+    if (!formData.pinCode.trim()) {
+      newErrors.pinCode = 'PIN code is required';
+    } else if (!/^\d{6}$/.test(formData.pinCode)) {
+      newErrors.pinCode = 'PIN code must be 6 digits';
     }
     
     return newErrors;
@@ -190,7 +207,7 @@ function Register() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number *
+                  Phone Number * (Indian Format)
                 </label>
                 <input
                   type="tel"
@@ -198,7 +215,8 @@ function Register() {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   className={`input ${errors.phoneNumber ? 'border-red-500' : ''}`}
-                  placeholder="+1234567890"
+                  placeholder="9876543210"
+                  maxLength="10"
                 />
                 {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
               </div>
@@ -220,44 +238,51 @@ function Register() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  City
+                  City *
                 </label>
                 <input
                   type="text"
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className="input"
-                  placeholder="New York"
+                  className={`input ${errors.city ? 'border-red-500' : ''}`}
+                  placeholder="Mumbai"
                 />
+                {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  State
+                  State * (Select from list)
                 </label>
-                <input
-                  type="text"
+                <select
                   name="state"
                   value={formData.state}
                   onChange={handleChange}
-                  className="input"
-                  placeholder="NY"
-                />
+                  className={`input ${errors.state ? 'border-red-500' : ''}`}
+                >
+                  <option value="">Choose a state</option>
+                  {INDIAN_STATES.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+                {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Zip Code
+                  PIN Code * (6 digits)
                 </label>
                 <input
                   type="text"
-                  name="zipCode"
-                  value={formData.zipCode}
+                  name="pinCode"
+                  value={formData.pinCode}
                   onChange={handleChange}
-                  className="input"
-                  placeholder="10001"
+                  className={`input ${errors.pinCode ? 'border-red-500' : ''}`}
+                  placeholder="400001"
+                  maxLength="6"
                 />
+                {errors.pinCode && <p className="text-red-500 text-xs mt-1">{errors.pinCode}</p>}
               </div>
             </div>
 
@@ -269,9 +294,8 @@ function Register() {
                 type="text"
                 name="country"
                 value={formData.country}
-                onChange={handleChange}
-                className="input"
-                placeholder="United States"
+                disabled
+                className="input bg-gray-100 cursor-not-allowed"
               />
             </div>
 
