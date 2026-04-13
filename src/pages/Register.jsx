@@ -152,7 +152,7 @@ function Register() {
                   value={formData.fullName}
                   onChange={handleChange}
                   className={`input ${errors.fullName ? 'border-red-500' : ''}`}
-                  placeholder="John Doe"
+                  placeholder="Name"
                 />
                 {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>}
               </div>
@@ -246,7 +246,7 @@ function Register() {
                   value={formData.city}
                   onChange={handleChange}
                   className={`input ${errors.city ? 'border-red-500' : ''}`}
-                  placeholder="Mumbai"
+                  placeholder="Mumbai,Delhi.."
                 />
                 {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
               </div>
