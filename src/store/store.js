@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
+import chatReducer from './slices/chatSlice';
 import { authApi } from '../api/authApi';
 import { stockApi } from '../api/stockApi';
 import { orderApi } from '../api/orderApi';
@@ -16,6 +17,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     ui: uiReducer,
+    chat: chatReducer,
     [authApi.reducerPath]: authApi.reducer,
     [stockApi.reducerPath]: stockApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,

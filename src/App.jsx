@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { store } from './store/store';
 import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ROLES } from './constants/roles';
 import { loadUserFromStorage } from './store/slices/authSlice';
+import { setUserRole, setWakingUp } from './store/slices/chatSlice';
+import { wakeUpBackend } from './api/chatService';
+import ChatWidget from './components/chat/ChatWidget';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Landing from './pages/Landing';
@@ -36,10 +39,33 @@ const ADMIN_ROLES = [ROLES.SUPER_ADMIN, ROLES.ADMIN];
 
 function AppRoutes() {
   const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     // Load user from localStorage on app mount
     dispatch(loadUserFromStorage());
+  }, [dispatch]);
+
+  // Set user role for chat when user logs in
+  useEffect(() => {
+    if (isAuthenticated && user?.role) {
+      dispatch(setUserRole(user.role));
+    }
+  }, [isAuthenticated, user, dispatch]);
+
+  // Wake up backend on app load (Render free tier optimization)
+  useEffect(() => {
+    const wakeUp = async () => {
+      try {
+        dispatch(setWakingUp(true));
+        await wakeUpBackend();
+      } catch (error) {
+        // Ignore errors, this is best-effort
+      } finally {
+        dispatch(setWakingUp(false));
+      }
+    };
+    wakeUp();
   }, [dispatch]);
 
   return (
@@ -149,6 +175,7 @@ function AppRoutes() {
           {/* 404 Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        {isAuthenticated && <ChatWidget />}
       </Router>
   );
 }
