@@ -15,7 +15,7 @@ const getToken = () => localStorage.getItem('token');
 export const sendChatQuery = async (query) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/api/chat/query`,
+      `${API_BASE_URL}/chat/query`,
       { query },  // Only send query, NOT role - Spring Boot gets role from JWT
       {
         timeout: 40000, // 40 seconds - generous for Render cold start + RAG pipeline
@@ -52,7 +52,7 @@ export const sendChatQuery = async (query) => {
 export const wakeUpBackend = async () => {
   try {
     // Wake up Spring Boot + Python in one call
-    await axios.get(`${API_BASE_URL}/api/chat/warmup`, { 
+    await axios.get(`${API_BASE_URL}/chat/warmup`, { 
       timeout: 5000,
       // No auth needed for warmup endpoint
     });

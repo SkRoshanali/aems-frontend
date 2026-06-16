@@ -70,8 +70,13 @@ const chatSlice = createSlice({
         state.isLoading = false;
         const errorMsg = action.payload;
         
+        // Safely check if errorMsg is a string or an object with a message property
+        const errorMessageStr = typeof errorMsg === 'string' 
+          ? errorMsg 
+          : (errorMsg?.message || JSON.stringify(errorMsg) || 'Unknown error');
+        
         // Check if it's a cold start timeout
-        if (errorMsg?.includes('waking up')) {
+        if (typeof errorMessageStr === 'string' && errorMessageStr.includes('waking up')) {
           state.isWakingUp = true;
           state.messages.push({
             type: 'system',
@@ -79,7 +84,7 @@ const chatSlice = createSlice({
             timestamp: new Date().toISOString(),
           });
         } else {
-          state.error = errorMsg;
+          state.error = errorMessageStr;
           state.messages.push({
             type: 'error',
             content: 'Sorry, I encountered an error. Please try again.',
