@@ -44,7 +44,7 @@ export const orderApi = createApi({
       query: ({ id, reason }) => ({
         url: `/${id}/reject`,
         method: 'PUT',
-        body: { reason },
+        params: { reason },
       }),
       invalidatesTags: ['Order'],
     }),
